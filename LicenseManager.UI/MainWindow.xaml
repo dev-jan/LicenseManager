@@ -1,0 +1,137 @@
+﻿<ribbon:RibbonWindow x:Class="LicenseManager.UI.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:LicenseManager.Logic;assembly=LicenseManager.Logic"
+        xmlns:ribbon="clr-namespace:System.Windows.Controls.Ribbon;assembly=System.Windows.Controls.Ribbon"
+        Title="LicenseManager" Height="394" Width="622" MinHeight="250" MinWidth="300"
+        Icon="Icons/LicenseManagerIcon256.png" Closing="RibbonWindow_Closing" >
+    <DockPanel  LastChildFill="True" >
+        <ribbon:Ribbon DockPanel.Dock="Top">
+            <!-- Quick actions menu bar (in the top windowframe) -->
+            <Ribbon.QuickAccessToolBar>
+                <RibbonQuickAccessToolBar>
+                    <RibbonButton Label="Save" SmallImageSource="Icons/vsil_save_floppydisk.png" ToolTip="Save file" Click="SaveMenuItem_Click"></RibbonButton>
+                </RibbonQuickAccessToolBar>
+            </Ribbon.QuickAccessToolBar>
+            <!-- Dropdown main menu -->
+            <Ribbon.ApplicationMenu>
+                <RibbonApplicationMenu SmallImageSource="Icons/vsil_db.png">
+                    <RibbonApplicationMenuItem Header="New" Click="NewMenuItem_Click" ImageSource="Icons/vsil_new.png" />
+                    <RibbonApplicationMenuItem Header="Open" Click="OpenMenuItem_Click" ImageSource="Icons/vsil_load.png" />
+                    <RibbonApplicationMenuItem Header="Save" Click="SaveMenuItem_Click" ImageSource="Icons/vsil_save_floppydisk.png" />
+                    <RibbonApplicationMenuItem Header="Save as..." Click="SaveAsMenuItem_Click"  />
+                    <RibbonApplicationMenu.FooterPaneContent>
+                        <RibbonButton Label="Exit" Click="CloseRibbonButton_Click" />
+                    </RibbonApplicationMenu.FooterPaneContent>
+                </RibbonApplicationMenu>
+            </Ribbon.ApplicationMenu>
+            <!-- Fist ribbon tab (default open) -->
+            <RibbonTab Header="Start">
+                <RibbonGroup Header="License">
+                    <RibbonButton Name="RibbonButtonNewLicense" Label="New License" LargeImageSource="Icons/vsil_key.png" IsEnabled="False" Click="NewLicenseButton_Click"/>
+                </RibbonGroup>
+                <RibbonGroup Header="Group">
+                    <RibbonButton Name="RibbonButtonNewRootGroup" Label="New Root Group" LargeImageSource="Icons/vsil_folder.png" Click="NewRootGroupButton_Click" />
+                    <RibbonButton Name="RibbonButtonNewGroup" Label="New Sub-Group" SmallImageSource="Icons/vsil_folder.png" Click="NewSubGroupButton_Click" IsEnabled="False" />
+                </RibbonGroup>
+            </RibbonTab>
+            
+            <!-- Second Ribbon tab -->
+            <RibbonTab Header="Help">
+                <RibbonGroup Header="Help">
+                    <RibbonButton Label="About" LargeImageSource="Icons/vsil_info.png" Click="AboutRibbonButton_Click" />
+                    <RibbonButton Label="Contact Developer by mail" SmallImageSource="Icons/vsil_envelop.png" Click="ContactByMailRibbonButton_Click"  />
+                    <RibbonButton Label="Homepage" SmallImageSource="Icons/vsil_world.png" Click="OpenHomepageRibbonButton_Click"/>
+                </RibbonGroup>
+            </RibbonTab>
+        </ribbon:Ribbon>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="40*" />
+                <ColumnDefinition Width="60*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            
+            <!-- Left Panel (TreeView) -->
+            <TreeView BorderThickness="0" Margin="0" Grid.Column="0" Name="LicensesTreeView" PreviewMouseRightButtonDown="LicensesTreeView_PreviewMouseRightButtonDown" 
+                      SelectedItemChanged="LicensesTreeView_SelectedItemChanged" >
+                <TreeView.Resources>
+                    <Brush x:Key="{x:Static SystemColors.HighlightBrushKey}">#3b8bee</Brush>
+                    <Style TargetType="{x:Type TreeViewItem}">
+                        <Setter Property="IsSelected"  Value="{Binding IsSelected, Mode=TwoWay}"/>
+                        <Setter Property="IsExpanded"  Value="{Binding IsExpanded, Mode=TwoWay}"/>
+                    </Style>
+                    <HierarchicalDataTemplate DataType="{x:Type local:Group}" ItemsSource="{Binding Items}">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="Icons/vsil_folder.png" Height="15px" Margin="2,0,7,0" />
+                            <TextBlock Text="{Binding Name}" Margin="0,2,8,2" />
+                        </StackPanel>
+                    </HierarchicalDataTemplate>
+                    <HierarchicalDataTemplate DataType="{x:Type local:License}">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="Icons/vsil_key.png" Height="15px" Margin="2,0,7,0" />
+                            <TextBlock Text="{Binding Product}" Margin="0,2,8,2" />
+                        </StackPanel>
+                    </HierarchicalDataTemplate>
+                </TreeView.Resources>
+                <TreeView.ContextMenu>
+                    <ContextMenu Name="LicensesTreeViewContextMenu">
+                        <MenuItem Header="Remove" Click="RemoveMenuItem_Click" >
+                            <MenuItem.Icon>
+                                <Image Source="Icons/vsil_delete.png" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <Separator />
+                        <!-- Here comes the dynamicly generated items... -->
+                    </ContextMenu>
+                </TreeView.ContextMenu>
+            </TreeView>
+            
+            <!-- Splitter: User can resize the treeview/detailview -->
+            <GridSplitter ResizeDirection="Columns" VerticalAlignment="Stretch" Width="10" />
+            
+            <!-- Right Panel (Detail View) -->
+            <Grid Name="LicenseDetailGrid" Margin="10" Grid.Column="2" Visibility="Collapsed">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="80"/>
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="100"/>
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                
+                <Label Content="Product:" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" />
+                <TextBox Grid.Row="0" Grid.Column="1" Margin="10" VerticalContentAlignment="Center" Text="{Binding Path=SelectedItem.Product, ElementName=LicensesTreeView }"  />
+                
+                <Label Content="Key:" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" />
+                
+                <DockPanel LastChildFill="True" Grid.Row="1" Grid.Column="1">
+                    <Button DockPanel.Dock="Right" Margin="0,10,10,10" Content="Copy" Padding="5" Click="KeyCopyButton_Click" />
+                    <TextBox  Margin="10" VerticalContentAlignment="Center" Text="{Binding Path=SelectedItem.Key, ElementName=LicensesTreeView }"/>
+                </DockPanel>
+                
+                <Label Content="Notice:" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" />
+                <TextBox Grid.Row="2" Grid.Column="1" Margin="10" AcceptsReturn="True" TextWrapping="Wrap" Text="{Binding Path=SelectedItem.Notice, ElementName=LicensesTreeView }" />
+            </Grid>
+            
+            <Grid Name="GroupDetailGrid" Margin="10" Grid.Column="2" Visibility="Hidden">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+
+                <Label Content="Groupname:" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" />
+                <TextBox Grid.Row="0" Grid.Column="1" Margin="10" VerticalContentAlignment="Center" Text="{Binding Path=SelectedItem.Name, ElementName=LicensesTreeView }"  />
+            </Grid>
+        </Grid>
+    </DockPanel>
+</ribbon:RibbonWindow>

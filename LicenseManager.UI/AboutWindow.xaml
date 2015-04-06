@@ -1,0 +1,12 @@
+﻿<Window x:Class="LicenseManager.UI.AboutWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="About" Height="479" Width="822" WindowStyle="None" ResizeMode="NoResize" ShowInTaskbar="False" Background="Transparent" AllowsTransparency="True" WindowStartupLocation="CenterOwner" Topmost="True" >
+    <Grid Margin="20" Background="Transparent">
+        <Grid.Effect>
+            <DropShadowEffect BlurRadius="15" Direction="-90" RenderingBias="Quality" ShadowDepth="2"/>
+        </Grid.Effect>
+
+        <Image Source="Icons/LicenseManagerAboutScreen.png" MouseUp="Image_MouseUp" />
+    </Grid>
+</Window>

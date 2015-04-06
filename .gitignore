@@ -1,0 +1,19 @@
+## Visual Studio ignores
+*.suo
+*.user
+*.userosscache
+*.obj
+*.pdb
+*.tmp
+*.log
+*.cache
+
+.vs/
+
+## Generated Builds
+LicenseManager.DataAccess/bin/
+LicenseManager.DataAccess/obj/
+LicenseManager.Logic/bin/
+LicenseManager.Logic/obj/
+LicenseManager.UI/bin/
+LicenseManager.UI/obj/
