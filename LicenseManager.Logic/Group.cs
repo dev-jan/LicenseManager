@@ -143,10 +143,6 @@ namespace LicenseManager.Logic
             set
             {
                 isExpanded = value;
-                if (parent != null)
-                {
-                    parent.IsExpanded = value;
-                }
                 OnPropertyChanged("IsExpanded");
             }
         }
