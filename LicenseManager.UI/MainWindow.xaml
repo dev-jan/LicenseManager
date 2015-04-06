@@ -55,7 +55,7 @@
             </Grid.RowDefinitions>
             
             <!-- Left Panel (TreeView) -->
-            <TreeView BorderThickness="0" Margin="0" Grid.Column="0" Name="LicensesTreeView" PreviewMouseRightButtonDown="LicensesTreeView_PreviewMouseRightButtonDown" 
+            <TreeView BorderThickness="0" Margin="0,0,10,0" Grid.Column="0" Name="LicensesTreeView" PreviewMouseRightButtonDown="LicensesTreeView_PreviewMouseRightButtonDown" 
                       SelectedItemChanged="LicensesTreeView_SelectedItemChanged" >
                 <TreeView.Resources>
                     <Brush x:Key="{x:Static SystemColors.HighlightBrushKey}">#3b8bee</Brush>
@@ -116,7 +116,9 @@
                 </DockPanel>
                 
                 <Label Content="Notice:" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" />
-                <TextBox Grid.Row="2" Grid.Column="1" Margin="10" AcceptsReturn="True" TextWrapping="Wrap" Text="{Binding Path=SelectedItem.Notice, ElementName=LicensesTreeView }" />
+                <TextBox Grid.Row="2" Grid.Column="1" Margin="10" AcceptsReturn="True" TextWrapping="Wrap" 
+                         Text="{Binding Path=SelectedItem.Notice, ElementName=LicensesTreeView }"
+                         VerticalScrollBarVisibility="Auto"/>
             </Grid>
             
             <Grid Name="GroupDetailGrid" Margin="10" Grid.Column="2" Visibility="Hidden">
