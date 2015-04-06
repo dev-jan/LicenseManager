@@ -5,7 +5,7 @@ LicenseManager
 
 Simple &amp; Smart License Management Software for Windows
 
-![Picture](https://raw.githubusercontent.com/dev-jan/LicenseManager/master/Screenshots/main.png)
+![Picture](https://raw.githubusercontent.com/dev-jan/LicenseManager/master/Screenshots/main.PNG)
 
 
 ### // Features
